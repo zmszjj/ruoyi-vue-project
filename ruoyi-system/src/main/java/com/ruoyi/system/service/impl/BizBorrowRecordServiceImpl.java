@@ -1,6 +1,9 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.Student;
+import com.ruoyi.system.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.BizBorrowRecordMapper;
@@ -16,6 +19,8 @@ import com.ruoyi.system.service.IBizBorrowRecordService;
 @Service
 public class BizBorrowRecordServiceImpl implements IBizBorrowRecordService 
 {
+    @Autowired
+    private IStudentService studentService;
     @Autowired
     private BizBorrowRecordMapper bizBorrowRecordMapper;
 
@@ -38,9 +43,22 @@ public class BizBorrowRecordServiceImpl implements IBizBorrowRecordService
      * @return 借阅记录
      */
     @Override
-    public List<BizBorrowRecord> selectBizBorrowRecordList(BizBorrowRecord bizBorrowRecord)
-    {
-        return bizBorrowRecordMapper.selectBizBorrowRecordList(bizBorrowRecord);
+    public List<BizBorrowRecord> selectBizBorrowRecordList(BizBorrowRecord bizBorrowRecord) {
+        // 先查出所有借阅记录
+        List<BizBorrowRecord> list = bizBorrowRecordMapper.selectBizBorrowRecordList(bizBorrowRecord);
+
+        // 遍历记录，把学生名字查出来塞进去
+        for (BizBorrowRecord record : list) {
+            if (record.getStudentId() != null) {
+                Student student = studentService.selectStudentByStudentId(record.getStudentId());
+                if (student != null) {
+                    // 注意：因为你生成的实体类里可能没有 studentName 字段
+                    // 只要你在 domain/BizBorrowRecord.java 里加上 private String studentName; 和 get/set 方法就行
+                     record.setStudentName(student.getStudentName());
+                }
+            }
+        }
+        return list;
     }
 
     /**

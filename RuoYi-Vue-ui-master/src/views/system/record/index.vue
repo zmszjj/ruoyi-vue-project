@@ -89,7 +89,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="记录ID" align="center" prop="recordId" />
       <el-table-column label="图书ID" align="center" prop="bookId" />
-      <el-table-column label="借阅学生ID" align="center" prop="studentId" />
+      <el-table-column label="借阅学生" align="center" prop="studentName" />
       <el-table-column label="借出时间" align="center" prop="borrowTime" width="180" />
       <el-table-column label="归还时间" align="center" prop="returnTime" width="180" />
       <el-table-column label="状态" align="center" prop="status" />

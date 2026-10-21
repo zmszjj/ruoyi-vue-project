@@ -186,11 +186,15 @@ export default {
       // 表单参数
       form: {},
       // 表单校验
-      rules: {
+            rules: {
         bookName: [
           { required: true, message: "书名不能为空", trigger: "blur" }
         ],
-      }
+        stock: [
+          { required: true, message: "库存不能为空", trigger: "blur" },
+          { pattern: /^[0-9]+$/, message: "库存必须是非负整数", trigger: "blur" }
+        ]
+      },
     }
   },
   created() {

@@ -144,9 +144,10 @@ public class BookServiceImpl implements IBookService
 
         // 4. 更新借阅记录（变成已归还，填入归还时间）
         if (result > 0) {
-            record.setStatus("1"); // 1代表已归还
-            record.setReturnTime(new Date()); // 记录归还时间
-            bizBorrowRecordService.updateBizBorrowRecord(record);
+            BizBorrowRecord returnRecord = recordList.get(0);
+            returnRecord.setStatus("1");
+            returnRecord.setReturnTime(new Date());
+            bizBorrowRecordService.updateBizBorrowRecord(returnRecord);
         }
 
         return result;

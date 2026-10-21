@@ -27,6 +27,15 @@ public class BizBorrowRecord extends BaseEntity
     /** 借阅学生ID */
     @Excel(name = "借阅学生ID")
     private Long studentId;
+    private String studentName; // 新增一个专门装学生名字的字段
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
 
     /** 借出时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
