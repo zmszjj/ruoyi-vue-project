@@ -92,6 +92,28 @@ public class BookController extends BaseController
     }
 
     /**
+     * 借出图书
+     */
+    @PreAuthorize("@ss.hasPermi('system:book:borrow')")
+    @PutMapping("/borrow/{bookId}")
+    public AjaxResult borrow(@PathVariable Long bookId) {
+        return toAjax(bookService.borrowBook(bookId));
+    }
+
+    /**
+     * 归还图书
+     */
+    @PreAuthorize("@ss.hasPermi('system:book:return')")
+    @PutMapping("/return/{bookId}")
+    public AjaxResult returnBook(@PathVariable Long bookId) {
+        return toAjax(bookService.returnBook(bookId));
+    }
+
+
+
+
+
+    /**
      * 删除图书信息
      */
     @PreAuthorize("@ss.hasPermi('system:book:remove')")

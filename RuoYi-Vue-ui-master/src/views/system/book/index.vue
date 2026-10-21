@@ -85,30 +85,19 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="bookList" @selection-change="handleSelectionChange">
+  <el-table v-loading="loading" :data="bookList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="图书ID" align="center" prop="bookId" />
       <el-table-column label="书名" align="center" prop="bookName" />
       <el-table-column label="作者" align="center" prop="author" />
       <el-table-column label="ISBN" align="center" prop="isbn" />
       <el-table-column label="库存" align="center" prop="stock" />
-      <el-table-column label="LINK" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:book:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:book:remove']"
-          >删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-minus" @click="handleBorrow(scope.row)">借出</el-button>
+          <el-button size="mini" type="text" icon="el-icon-plus" @click="handleReturn(scope.row)">归还</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -161,7 +150,7 @@
 </template>
 
 <script>
-import { listBook, getBook, delBook, addBook, updateBook } from "@/api/system/book"
+import { listBook, getBook, delBook, addBook, updateBook,borrowBook,returnBook } from "@/api/system/book"
 
 export default {
   name: "Book",
@@ -259,6 +248,28 @@ export default {
       this.reset()
       this.open = true
       this.title = "添加图书信息"
+    },
+      /** 借出按钮操作 */
+    handleBorrow(row) {
+      this.$modal.confirm('确认要借出《' + row.bookName + '》吗？').then(() => {
+        return borrowBook(row.bookId);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("借出成功");
+      }).catch((error) => {
+        console.error("借出报错了：", error);
+      });
+    },
+     /** 归还按钮操作 */
+    handleReturn(row) {
+      this.$modal.confirm('确认要归还《' + row.bookName + '》吗？').then(() => {
+        return returnBook(row.bookId);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("归还成功");
+      }).catch((error) => {
+        console.error("归还报错了：", error);
+      });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

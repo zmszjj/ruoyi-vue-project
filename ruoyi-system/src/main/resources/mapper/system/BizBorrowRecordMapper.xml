@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BizBorrowRecordMapper">
+    
+    <resultMap type="BizBorrowRecord" id="BizBorrowRecordResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="bookId"    column="book_id"    />
+        <result property="studentId"    column="student_id"    />
+        <result property="borrowTime"    column="borrow_time"    />
+        <result property="returnTime"    column="return_time"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectBizBorrowRecordVo">
+        select record_id, book_id, student_id, borrow_time, return_time, status from biz_borrow_record
+    </sql>
+
+    <select id="selectBizBorrowRecordList" parameterType="BizBorrowRecord" resultMap="BizBorrowRecordResult">
+        <include refid="selectBizBorrowRecordVo"/>
+        <where>  
+            <if test="bookId != null "> and book_id = #{bookId}</if>
+            <if test="studentId != null "> and student_id = #{studentId}</if>
+            <if test="borrowTime != null "> and borrow_time = #{borrowTime}</if>
+            <if test="returnTime != null "> and return_time = #{returnTime}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizBorrowRecordByRecordId" parameterType="Long" resultMap="BizBorrowRecordResult">
+        <include refid="selectBizBorrowRecordVo"/>
+        where record_id = #{recordId}
+    </select>
+
+    <insert id="insertBizBorrowRecord" parameterType="BizBorrowRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into biz_borrow_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bookId != null">book_id,</if>
+            <if test="studentId != null">student_id,</if>
+            <if test="borrowTime != null">borrow_time,</if>
+            <if test="returnTime != null">return_time,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bookId != null">#{bookId},</if>
+            <if test="studentId != null">#{studentId},</if>
+            <if test="borrowTime != null">#{borrowTime},</if>
+            <if test="returnTime != null">#{returnTime},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizBorrowRecord" parameterType="BizBorrowRecord">
+        update biz_borrow_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bookId != null">book_id = #{bookId},</if>
+            <if test="studentId != null">student_id = #{studentId},</if>
+            <if test="borrowTime != null">borrow_time = #{borrowTime},</if>
+            <if test="returnTime != null">return_time = #{returnTime},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteBizBorrowRecordByRecordId" parameterType="Long">
+        delete from biz_borrow_record where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteBizBorrowRecordByRecordIds" parameterType="String">
+        delete from biz_borrow_record where record_id in 
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+</mapper>

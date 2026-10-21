@@ -34,7 +34,20 @@ export function updateBook(data) {
     data: data
   })
 }
-
+//借阅图书信息
+export function borrowBook(bookId) {
+  return request({
+    url: '/system/book/borrow/' + bookId,
+    method: 'put'
+  })
+}
+//归还图书信息
+export function returnBook(bookId) {
+  return request({
+    url: '/system/book/return/' + bookId,
+    method: 'put'
+  })
+}
 // 删除图书信息
 export function delBook(bookId) {
   return request({

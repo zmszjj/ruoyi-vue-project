@@ -36,8 +36,22 @@ public interface IBookService
     public int insertBook(Book book);
 
     /**
+     * 借阅图书
+     *
+     * @param bookId 图书信息主键
+     * @return 图书信息
+     */
+    int borrowBook(Long bookId);
+    /**
+     * 归还图书
+     *
+     * @param bookId 图书信息主键
+     * @return 图书信息
+     */
+    int returnBook(Long bookId);
+    /**
      * 修改图书信息
-     * 
+     *
      * @param book 图书信息
      * @return 结果
      */
