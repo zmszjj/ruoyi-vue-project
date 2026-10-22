@@ -180,7 +180,11 @@ export default {
         studentName: [
           { required: true, message: "姓名不能为空", trigger: "blur" }
         ],
-      }
+        studentAge: [
+          { required: true, message: "年龄不能为空", trigger: "blur" },
+          { pattern: /^[0-9]+$/, message: "年龄必须是数字", trigger: "blur" }
+        ]
+      },
     }
   },
   created() {

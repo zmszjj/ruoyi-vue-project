@@ -82,7 +82,7 @@ public class BookServiceImpl implements IBookService
      */
 
     @Override
-    public int borrowBook(Long bookId) {
+    public int borrowBook(Long bookId, Long studentId) {
         // 1. 查书
         Book book = bookMapper.selectBookByBookId(bookId);
         if (book == null) {
@@ -102,7 +102,7 @@ public class BookServiceImpl implements IBookService
             record.setBookId(bookId);
             record.setBorrowTime(new Date()); // 记录当前时间
             record.setStatus("0");            // 0代表借出中
-            record.setStudentId(1L);          // 先写死一个学生ID为1
+            record.setStudentId(studentId);          // 先写死一个学生ID为1
             bizBorrowRecordService.insertBizBorrowRecord(record);
         }
         return result;

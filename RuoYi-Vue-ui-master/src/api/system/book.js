@@ -35,10 +35,12 @@ export function updateBook(data) {
   })
 }
 //借阅图书信息
-export function borrowBook(bookId) {
+// 借阅图书
+export function borrowBook(bookId, studentId) {
   return request({
     url: '/system/book/borrow/' + bookId,
-    method: 'put'
+    method: 'put',
+    params: { studentId: studentId } // 👈 把学生ID作为参数传给后端
   })
 }
 //归还图书信息

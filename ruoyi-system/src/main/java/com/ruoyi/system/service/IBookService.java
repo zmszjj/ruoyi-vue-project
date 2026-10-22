@@ -41,7 +41,7 @@ public interface IBookService
      * @param bookId 图书信息主键
      * @return 图书信息
      */
-    int borrowBook(Long bookId);
+    int borrowBook(Long bookId, Long studentId);
     /**
      * 归还图书
      *

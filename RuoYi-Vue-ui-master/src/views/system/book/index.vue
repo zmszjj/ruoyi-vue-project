@@ -254,11 +254,19 @@ export default {
       this.title = "添加图书信息"
     },
       /** 借出按钮操作 */
+    /** 借出按钮操作 */
     handleBorrow(row) {
-      this.$modal.confirm('确认要借出《' + row.bookName + '》吗？').then(() => {
-        return borrowBook(row.bookId);
+      // 使用 $prompt 弹出一个输入框，让用户输入学生ID
+      this.$prompt('请输入借书学生的ID (例如: 1)', '借出图书', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^[0-9]+$/, // 正则：只能输入数字
+        inputErrorMessage: '学生ID必须是数字'
+      }).then(({ value }) => {
+        // 用户点确定后，把 bookId 和输入的学生ID 传给后端
+        return borrowBook(row.bookId, value);
       }).then(() => {
-        this.getList();
+        this.getList(); // 刷新表格
         this.$modal.msgSuccess("借出成功");
       }).catch((error) => {
         console.error("借出报错了：", error);
